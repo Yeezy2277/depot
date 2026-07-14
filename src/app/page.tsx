@@ -1,9 +1,13 @@
 import Link from "next/link";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 export default function Home() {
   return (
     <main className="wrap">
-      <span className="pill">Backend · API · Postgres</span>
+      <div className="topbar">
+        <span className="pill">Backend · API · Postgres</span>
+        <ThemeToggle />
+      </div>
       <h1>Depot</h1>
       <p className="lede">
         A headless content API — the <strong>backend half of a CMS</strong>. Email/password

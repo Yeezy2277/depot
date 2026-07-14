@@ -6,8 +6,54 @@
   --muted: #9aa7b4;
   --accent: #5b9dff;
   --accent-soft: rgba(91, 157, 255, 0.14);
+  --code-bg: #0a0e13;
   --radius: 12px;
   color-scheme: dark;
+}
+
+:root[data-theme="light"] {
+  --bg: #f7f9fb;
+  --surface: #ffffff;
+  --border: #e3e8ee;
+  --text: #17202b;
+  --muted: #5b6673;
+  --accent: #2f6fe4;
+  --accent-soft: rgba(47, 111, 228, 0.1);
+  --code-bg: #f4f6f9;
+  color-scheme: light;
+}
+
+body {
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 8px;
+}
+
+.theme-toggle {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--muted);
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+.theme-toggle:hover {
+  border-color: var(--accent);
+  color: var(--accent);
 }
 
 * {
@@ -80,7 +126,7 @@ h1 {
 }
 
 pre.block {
-  background: #0a0e13;
+  background: var(--code-bg);
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 16px;
@@ -114,7 +160,7 @@ button {
 .input {
   width: 100%;
   padding: 10px 12px;
-  background: #0a0e13;
+  background: var(--code-bg);
   border: 1px solid var(--border);
   border-radius: 8px;
   color: var(--text);
