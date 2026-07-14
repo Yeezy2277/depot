@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 type Collection = { id: string; name: string; slug: string; description: string | null };
 type Token = { id: string; name: string; prefix: string; lastUsedAt: Date | string | null };
@@ -75,9 +76,12 @@ export function AdminConsole({
             Signed in as {email}
           </p>
         </div>
-        <button className="btn ghost" onClick={logout}>
-          Sign out
-        </button>
+        <div className="row" style={{ gap: 10 }}>
+          <ThemeToggle />
+          <button className="btn ghost" onClick={logout}>
+            Sign out
+          </button>
+        </div>
       </div>
 
       {error && <p style={{ color: "#f0a5a5" }}>{error}</p>}
