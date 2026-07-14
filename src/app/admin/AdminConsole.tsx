@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ThemeToggle } from "@/components/ThemeToggle";
 
@@ -109,17 +110,25 @@ export function AdminConsole({
                   <th>Name</th>
                   <th>Slug</th>
                   <th>Delivery path</th>
+                  <th></th>
                 </tr>
               </thead>
               <tbody>
                 {collections.map((c) => (
                   <tr key={c.id}>
-                    <td>{c.name}</td>
+                    <td>
+                      <Link href={`/admin/${c.slug}`}>{c.name}</Link>
+                    </td>
                     <td>
                       <code>{c.slug}</code>
                     </td>
                     <td className="muted">
                       <code>/api/v1/{c.slug}</code>
+                    </td>
+                    <td>
+                      <Link className="btn ghost" href={`/admin/${c.slug}`}>
+                        Edit items
+                      </Link>
                     </td>
                   </tr>
                 ))}

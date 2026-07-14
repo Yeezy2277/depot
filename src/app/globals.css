@@ -206,6 +206,24 @@ th {
 
 /* Wide content (tables) scrolls inside its own container instead of pushing the
    page sideways on narrow screens. */
+.tag {
+  display: inline-block;
+  padding: 2px 9px;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--muted);
+}
+.tag--ok {
+  color: #2e9e6b;
+  border-color: rgba(46, 158, 107, 0.4);
+  background: rgba(46, 158, 107, 0.12);
+}
+:root[data-theme="dark"] .tag--ok {
+  color: #7ec699;
+}
+
 .scroll-x {
   overflow-x: auto;
 }
