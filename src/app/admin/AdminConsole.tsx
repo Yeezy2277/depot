@@ -98,7 +98,7 @@ export function AdminConsole({
         {collections.length === 0 ? (
           <p className="muted">No collections yet — create your first content type above.</p>
         ) : (
-          <div className="card">
+          <div className="card scroll-x">
             <table>
               <thead>
                 <tr>
@@ -151,7 +151,7 @@ export function AdminConsole({
         {tokens.length === 0 ? (
           <p className="muted">No tokens yet.</p>
         ) : (
-          <div className="card">
+          <div className="card scroll-x">
             <table>
               <thead>
                 <tr>

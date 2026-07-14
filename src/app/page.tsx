@@ -64,7 +64,7 @@ export default function Home() {
 
       <section style={{ marginTop: 40 }}>
         <h2 style={{ fontSize: "1.1rem" }}>Endpoints</h2>
-        <div className="card">
+        <div className="card scroll-x">
           <table>
             <thead>
               <tr>

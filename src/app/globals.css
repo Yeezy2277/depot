@@ -157,3 +157,24 @@ th {
   color: var(--muted);
   font-weight: 600;
 }
+
+/* Wide content (tables) scrolls inside its own container instead of pushing the
+   page sideways on narrow screens. */
+.scroll-x {
+  overflow-x: auto;
+}
+.scroll-x table {
+  min-width: 460px;
+}
+
+@media (max-width: 640px) {
+  .wrap {
+    padding: 40px 18px 64px;
+  }
+  h1 {
+    font-size: 1.9rem;
+  }
+  .lede {
+    font-size: 1rem;
+  }
+}
