@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { fmtInstant } from "@/lib/format";
 
 type Collection = { id: string; name: string; slug: string; description: string | null };
 type Token = {
@@ -224,9 +225,7 @@ export function AdminConsole({
                         "any (open)"
                       )}
                     </td>
-                    <td className="muted">
-                      {t.lastUsedAt ? new Date(t.lastUsedAt).toLocaleString() : "never"}
-                    </td>
+                    <td className="muted">{fmtInstant(t.lastUsedAt)}</td>
                   </tr>
                 ))}
               </tbody>

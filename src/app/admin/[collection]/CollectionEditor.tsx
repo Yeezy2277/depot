@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { fmtDate } from "@/lib/format";
 
 type Item = {
   id: string;
@@ -225,7 +226,7 @@ export function CollectionEditor({
                     <td className="muted">
                       {typeof item.data.title === "string" ? item.data.title : "—"}
                     </td>
-                    <td className="muted">{new Date(item.updatedAt).toLocaleDateString()}</td>
+                    <td className="muted">{fmtDate(item.updatedAt)}</td>
                     <td>
                       <button className="btn ghost" onClick={() => edit(item)}>
                         Edit
