@@ -24,6 +24,7 @@ export default async function AdminPage() {
         id: apiTokens.id,
         name: apiTokens.name,
         prefix: apiTokens.prefix,
+        allowedOrigins: apiTokens.allowedOrigins,
         lastUsedAt: apiTokens.lastUsedAt,
       })
       .from(apiTokens)

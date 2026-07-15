@@ -27,7 +27,9 @@ function bearer(req: Request): string | null {
   return url.searchParams.get("token");
 }
 
-export async function requireToken(req: Request): Promise<{ userId: string }> {
+export async function requireToken(
+  req: Request,
+): Promise<{ userId: string; allowedOrigins: string[] }> {
   const token = bearer(req);
   if (!token || !looksLikeToken(token)) throw unauthorized("Provide a delivery token");
 
@@ -42,5 +44,5 @@ export async function requireToken(req: Request): Promise<{ userId: string }> {
     .where(eq(apiTokens.id, row.id))
     .catch(() => {});
 
-  return { userId: row.userId };
+  return { userId: row.userId, allowedOrigins: row.allowedOrigins };
 }
