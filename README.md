@@ -113,6 +113,8 @@ so the tests never boot Next.
 - Delivery tokens: 32 bytes of entropy, stored only as a SHA-256 hash, shown once.
 - Sessions: signed HS256 JWT, httpOnly + `secure` in production, 7-day expiry.
 - Every write checks resource ownership; the delivery API is read-only and rate-limited.
-- CORS: the delivery API is intentionally open (`Access-Control-Allow-Origin: *`) for this
-  public demo. In production I'd scope allowed origins per delivery token (an `origins`
-  allowlist on the token, checked against the request `Origin`).
+- CORS: delivery tokens carry an optional **origin allowlist**. A token with no origins is
+  open (`Access-Control-Allow-Origin: *`) — fine for this public demo; a token _with_
+  origins serves only browsers whose `Origin` is on the list (the response echoes that
+  origin, others get `403`), while server-to-server calls with no `Origin` still work.
+  Set it per token in the admin console.

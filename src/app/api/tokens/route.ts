@@ -15,6 +15,7 @@ export function GET() {
         id: apiTokens.id,
         name: apiTokens.name,
         prefix: apiTokens.prefix,
+        allowedOrigins: apiTokens.allowedOrigins,
         lastUsedAt: apiTokens.lastUsedAt,
         createdAt: apiTokens.createdAt,
       })
@@ -31,6 +32,9 @@ export function POST(req: Request) {
     const body = await parseBody(req, createTokenSchema);
 
     const token = generateToken();
+    // Normalize origins (drop any trailing slash so they match the Origin header).
+    const origins = (body.origins ?? []).map((o) => o.replace(/\/+$/, ""));
+
     const [row] = await db
       .insert(apiTokens)
       .values({
@@ -38,8 +42,14 @@ export function POST(req: Request) {
         name: body.name,
         tokenHash: await hashToken(token),
         prefix: tokenPrefix(token),
+        allowedOrigins: origins,
       })
-      .returning({ id: apiTokens.id, name: apiTokens.name, prefix: apiTokens.prefix });
+      .returning({
+        id: apiTokens.id,
+        name: apiTokens.name,
+        prefix: apiTokens.prefix,
+        allowedOrigins: apiTokens.allowedOrigins,
+      });
 
     // `token` is returned exactly once — it is never recoverable afterwards.
     return ok({ ...row, token }, { status: 201 });

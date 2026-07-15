@@ -1,5 +1,5 @@
 import { pgTable, text, timestamp, jsonb, uniqueIndex, index, pgEnum } from "drizzle-orm/pg-core";
-import { relations } from "drizzle-orm";
+import { relations, sql } from "drizzle-orm";
 
 /**
  * Depot content model.
@@ -45,6 +45,11 @@ export const apiTokens = pgTable(
     tokenHash: text("token_hash").notNull(),
     // first chars of the token, stored in the clear so the UI can label it.
     prefix: text("prefix").notNull(),
+    // Browser origins allowed to read with this token. Empty = open (any origin).
+    allowedOrigins: text("allowed_origins")
+      .array()
+      .notNull()
+      .default(sql`'{}'::text[]`),
     lastUsedAt: timestamp("last_used_at", { withTimezone: true }),
     createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
   },

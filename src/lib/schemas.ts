@@ -46,4 +46,9 @@ export const updateItemSchema = z
 
 export const createTokenSchema = z.object({
   name: z.string().min(1).max(60),
+  // Optional browser-origin allowlist (e.g. ["https://myapp.com"]). Empty = any.
+  origins: z
+    .array(z.string().url("Each origin must be a full URL, e.g. https://example.com"))
+    .max(20)
+    .optional(),
 });

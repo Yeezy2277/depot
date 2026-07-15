@@ -6,7 +6,13 @@ import { useRouter } from "next/navigation";
 import { ThemeToggle } from "@/components/ThemeToggle";
 
 type Collection = { id: string; name: string; slug: string; description: string | null };
-type Token = { id: string; name: string; prefix: string; lastUsedAt: Date | string | null };
+type Token = {
+  id: string;
+  name: string;
+  prefix: string;
+  allowedOrigins: string[];
+  lastUsedAt: Date | string | null;
+};
 
 export function AdminConsole({
   email,
@@ -22,6 +28,7 @@ export function AdminConsole({
   const [tokens, setTokens] = useState(initialTokens);
   const [name, setName] = useState("");
   const [tokenName, setTokenName] = useState("");
+  const [tokenOrigins, setTokenOrigins] = useState("");
   const [freshToken, setFreshToken] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -51,11 +58,26 @@ export function AdminConsole({
   async function issueToken(e: React.FormEvent) {
     e.preventDefault();
     setError(null);
+    // Split origins on comma/newline/space; keep only non-empty entries.
+    const origins = tokenOrigins.split(/[\s,]+/).map((o) => o.trim()).filter(Boolean);
     try {
-      const created = await api("/api/tokens", { name: tokenName });
+      const created = await api("/api/tokens", {
+        name: tokenName,
+        ...(origins.length ? { origins } : {}),
+      });
       setFreshToken(created.token);
-      setTokens((t) => [{ id: created.id, name: created.name, prefix: created.prefix, lastUsedAt: null }, ...t]);
+      setTokens((t) => [
+        {
+          id: created.id,
+          name: created.name,
+          prefix: created.prefix,
+          allowedOrigins: created.allowedOrigins ?? [],
+          lastUsedAt: null,
+        },
+        ...t,
+      ]);
       setTokenName("");
+      setTokenOrigins("");
     } catch (err) {
       setError((err as Error).message);
     }
@@ -140,16 +162,30 @@ export function AdminConsole({
 
       <section style={{ marginTop: 36 }}>
         <h2 style={{ fontSize: "1.1rem" }}>Delivery tokens</h2>
-        <form onSubmit={issueToken} className="row" style={{ marginBottom: 16 }}>
+        <form
+          onSubmit={issueToken}
+          style={{ marginBottom: 16, display: "grid", gap: 10, maxWidth: 520 }}
+        >
           <input
             className="input"
-            style={{ maxWidth: 280 }}
             placeholder="Token name (e.g. Website)"
             value={tokenName}
             onChange={(e) => setTokenName(e.target.value)}
             required
           />
-          <button className="btn">Issue token</button>
+          <input
+            className="input"
+            placeholder="Allowed origins (optional, comma-separated) — e.g. https://myapp.com"
+            value={tokenOrigins}
+            onChange={(e) => setTokenOrigins(e.target.value)}
+          />
+          <p className="muted" style={{ margin: 0, fontSize: "0.82rem" }}>
+            Leave origins empty for an open token. When set, only those browser origins
+            can read with this token (checked against the request <code>Origin</code>).
+          </p>
+          <button className="btn" style={{ justifySelf: "start" }}>
+            Issue token
+          </button>
         </form>
 
         {freshToken && (
@@ -170,6 +206,7 @@ export function AdminConsole({
                 <tr>
                   <th>Name</th>
                   <th>Prefix</th>
+                  <th>Allowed origins</th>
                   <th>Last used</th>
                 </tr>
               </thead>
@@ -179,6 +216,13 @@ export function AdminConsole({
                     <td>{t.name}</td>
                     <td>
                       <code>{t.prefix}</code>
+                    </td>
+                    <td className="muted">
+                      {t.allowedOrigins.length ? (
+                        <code>{t.allowedOrigins.join(", ")}</code>
+                      ) : (
+                        "any (open)"
+                      )}
                     </td>
                     <td className="muted">
                       {t.lastUsedAt ? new Date(t.lastUsedAt).toLocaleString() : "never"}

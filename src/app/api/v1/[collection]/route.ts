@@ -1,11 +1,17 @@
 import { and, desc, eq } from "drizzle-orm";
+import { NextResponse } from "next/server";
 import { db } from "@/db";
 import { collections, items } from "@/db/schema";
 import { handle, ok, notFound, badRequest } from "@/lib/http";
 import { requireToken } from "@/lib/auth/guard";
+import { corsHeadersFor, preflightHeaders } from "@/lib/cors";
 import { clientKey, enforceLimit } from "@/lib/rate-limit";
 
 type Ctx = { params: Promise<{ collection: string }> };
+
+export function OPTIONS() {
+  return new NextResponse(null, { status: 204, headers: preflightHeaders() });
+}
 
 /**
  * Public delivery API. Bearer `depot_…` token → the owning user's *published*
@@ -15,8 +21,9 @@ type Ctx = { params: Promise<{ collection: string }> };
  */
 export function GET(req: Request, { params }: Ctx) {
   return handle(async () => {
-    const { userId } = await requireToken(req);
-    enforceLimit(clientKey(req, "delivery"), { limit: 120, windowMs: 60_000 });
+    const { userId, allowedOrigins } = await requireToken(req);
+    const cors = corsHeadersFor(req, allowedOrigins);
+    const rl = enforceLimit(clientKey(req, "delivery"), { limit: 120, windowMs: 60_000 });
 
     const collection = await db.query.collections.findFirst({
       where: and(eq(collections.ownerId, userId), eq(collections.slug, (await params).collection)),
@@ -41,7 +48,7 @@ export function GET(req: Request, { params }: Ctx) {
       .limit(limit)
       .offset(offset);
 
-    return ok(rows);
+    return ok(rows, { headers: { ...cors, ...rl } });
   });
 }
 
