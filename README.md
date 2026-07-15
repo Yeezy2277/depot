@@ -96,9 +96,11 @@ npm run typecheck
 npm run build
 ```
 
-The pure security-relevant logic (password + token hashing, slug rules, the rate-limit
-window) is unit-tested; the algorithm lives in framework-free modules so the tests never
-boot Next.
+The security-critical pure logic is unit-tested (`node --test`, 14 assertions): password
+hashing is salted and never leaks the plaintext, delivery tokens are SHA-256-hashed and
+unique, the rate-limit window opens/blocks/resets on schedule, and slug validation accepts
+clean slugs while rejecting malformed ones. The algorithms live in framework-free modules
+so the tests never boot Next.
 
 ## Deploy (free)
 
@@ -111,3 +113,6 @@ boot Next.
 - Delivery tokens: 32 bytes of entropy, stored only as a SHA-256 hash, shown once.
 - Sessions: signed HS256 JWT, httpOnly + `secure` in production, 7-day expiry.
 - Every write checks resource ownership; the delivery API is read-only and rate-limited.
+- CORS: the delivery API is intentionally open (`Access-Control-Allow-Origin: *`) for this
+  public demo. In production I'd scope allowed origins per delivery token (an `origins`
+  allowlist on the token, checked against the request `Origin`).
