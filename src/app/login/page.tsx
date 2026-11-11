@@ -35,7 +35,7 @@ export default function LoginPage() {
   }
 
   return (
-    <main className="wrap" style={{ maxWidth: 420 }}>
+    <main className="wrap" id="main" style={{ maxWidth: 420 }}>
       <h1 style={{ fontSize: "1.6rem" }}>{mode === "login" ? "Sign in" : "Create account"}</h1>
       <p className="muted">Depot admin console.</p>
 
@@ -73,7 +73,7 @@ export default function LoginPage() {
             onChange={(e) => setInvite(e.target.value)}
           />
         )}
-        {error && <p style={{ color: "#f0a5a5", margin: 0 }}>{error}</p>}
+        {error && <p className="error" role="alert">{error}</p>}
         <button className="btn" disabled={busy}>
           {busy ? "…" : mode === "login" ? "Sign in" : "Create account"}
         </button>
