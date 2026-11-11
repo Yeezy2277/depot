@@ -110,7 +110,7 @@ export function CollectionEditor({
   }
 
   return (
-    <main className="wrap">
+    <main className="wrap" id="main">
       <div className="row" style={{ justifyContent: "space-between" }}>
         <div>
           <Link className="muted" href="/admin">
@@ -132,7 +132,7 @@ export function CollectionEditor({
         </button>
       </div>
 
-      {error && <p style={{ color: "#f0a5a5" }}>{error}</p>}
+      {error && <p className="error" role="alert">{error}</p>}
 
       {draft && (
         <form onSubmit={save} className="card" style={{ marginTop: 20, display: "grid", gap: 12 }}>
@@ -182,8 +182,8 @@ export function CollectionEditor({
             {draft.id && (
               <button
                 type="button"
-                className="btn ghost"
-                style={{ marginLeft: "auto", borderColor: "#7a3b3b", color: "#f0a5a5" }}
+                className="btn danger"
+                style={{ marginLeft: "auto" }}
                 onClick={() => {
                   const item = items.find((i) => i.id === draft.id);
                   if (item) remove(item);

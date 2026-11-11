@@ -91,7 +91,7 @@ export function AdminConsole({
   }
 
   return (
-    <main className="wrap">
+    <main className="wrap" id="main">
       <div className="row" style={{ justifyContent: "space-between" }}>
         <div>
           <span className="pill">Admin console</span>
@@ -108,7 +108,7 @@ export function AdminConsole({
         </div>
       </div>
 
-      {error && <p style={{ color: "#f0a5a5" }}>{error}</p>}
+      {error && <p className="error" role="alert">{error}</p>}
 
       <section style={{ marginTop: 36 }}>
         <h2 style={{ fontSize: "1.1rem" }}>Collections</h2>

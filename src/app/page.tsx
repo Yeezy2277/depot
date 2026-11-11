@@ -3,12 +3,16 @@ import { ThemeToggle } from "@/components/ThemeToggle";
 
 export default function Home() {
   return (
-    <main className="wrap">
+    <main className="wrap" id="main">
+      <header className="masthead">
       <div className="topbar">
-        <span className="pill">Backend · API · Postgres</span>
+        <span className="pill">backend · api · postgres</span>
         <ThemeToggle />
       </div>
       <h1>Depot</h1>
+      <p className="endpoint">
+        <b>GET</b> /api/v1/<b>:collection</b>/:slug
+      </p>
       <p className="lede">
         A headless content API — the <strong>backend half of a CMS</strong>. Email/password
         auth with signed-cookie sessions, hashed API tokens for delivery, a Postgres content
@@ -27,9 +31,10 @@ export default function Home() {
           Portfolio
         </a>
       </div>
+      </header>
 
       <section style={{ marginTop: 44 }}>
-        <h2 style={{ fontSize: "1.1rem" }}>What it demonstrates</h2>
+        <h2>What it demonstrates</h2>
         <div className="grid">
           <div className="card">
             <strong>Auth, two surfaces</strong>
@@ -56,19 +61,22 @@ export default function Home() {
       </section>
 
       <section style={{ marginTop: 40 }}>
-        <h2 style={{ fontSize: "1.1rem" }}>Delivery API</h2>
+        <h2>Delivery API</h2>
         <p className="muted">
           Read published content with a bearer token — CORS-open, so any frontend can consume it:
         </p>
-        <pre className="block">{`curl https://depot.vitaliipopov.dev/api/v1/articles \\
-  -H "Authorization: Bearer depot_your_token_here"
-
-# → { "data": [ { "slug": "hello-world", "data": { ... }, "publishedAt": "…" } ] }`}</pre>
+        <pre className="block" tabIndex={0} role="region" aria-label="Example request; scrolls sideways">
+          {CURL.map((line, i) => (
+            <span key={i} className={line.startsWith("#") ? "ln c" : "ln"}>
+              {line || " "}
+            </span>
+          ))}
+        </pre>
       </section>
 
       <section style={{ marginTop: 40 }}>
-        <h2 style={{ fontSize: "1.1rem" }}>Endpoints</h2>
-        <div className="card scroll-x">
+        <h2>Endpoints</h2>
+        <div className="card scroll-x" tabIndex={0} role="region" aria-label="Endpoints table; scrolls sideways">
           <table>
             <thead>
               <tr>
@@ -82,7 +90,7 @@ export default function Home() {
               {ENDPOINTS.map((e) => (
                 <tr key={e.path + e.method}>
                   <td>
-                    <code>{e.method}</code>
+                    <span className={e.method === "GET" ? "method method--read" : "method method--write"}>{e.method}</span>
                   </td>
                   <td>
                     <code>{e.path}</code>
@@ -98,6 +106,13 @@ export default function Home() {
     </main>
   );
 }
+
+const CURL = [
+  "curl https://depot.vitaliipopov.dev/api/v1/articles \\",
+  '  -H "Authorization: Bearer depot_your_token_here"',
+  "",
+  '# → { "data": [ { "slug": "hello-world", "data": { … }, "publishedAt": "…" } ] }',
+];
 
 const ENDPOINTS = [
   { method: "POST", path: "/api/auth/register", auth: "—", purpose: "Create an admin account" },
