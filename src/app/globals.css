@@ -1,25 +1,47 @@
+/*
+ * Depot identity: a content warehouse with an API counter.
+ *   Type    Fira Sans (display 800 vs body 300) + Fira Code for paths, payloads, methods.
+ *   Colour  slate, one teal for reads and the brand, amber for writes. Neutrals tint
+ *           toward the slate; semantic success stays green.
+ *   Detail  an API reference rail: method badges, a console block with a line gutter,
+ *           and a floor-plan dot grid behind the masthead only.
+ */
 :root {
-  --bg: #0b0f14;
-  --surface: #141a22;
-  --border: #232c38;
-  --text: #e6edf3;
-  --muted: #9aa7b4;
-  --accent: #5b9dff;
-  --accent-soft: rgba(91, 157, 255, 0.14);
-  --code-bg: #0a0e13;
-  --radius: 12px;
+  --bg: #0f1519;
+  --surface: #161e24;
+  --border: #26323b;
+  --text: #e3eaed;
+  --muted: #93a4ad;
+  --accent: #2dd4bf;
+  --accent-ink: #04211d;
+  --accent-soft: rgba(45, 212, 191, 0.12);
+  --write: #f2b45a;
+  --write-soft: rgba(242, 180, 90, 0.12);
+  --code-bg: #0a1013;
+  --code-text: #cbd5d8;
+  --danger: #f0a5a5;
+  --grid: rgba(147, 164, 173, 0.16);
+  --radius: 4px;
+  --sans: var(--font-fira-sans, "Fira Sans"), "Helvetica Neue", Arial, sans-serif;
+  --code: var(--font-fira-code, "Fira Code"), ui-monospace, Menlo, monospace;
   color-scheme: dark;
 }
 
 :root[data-theme="light"] {
-  --bg: #f7f9fb;
+  --bg: #eef2f2;
   --surface: #ffffff;
-  --border: #e3e8ee;
-  --text: #17202b;
-  --muted: #5b6673;
-  --accent: #2f6fe4;
-  --accent-soft: rgba(47, 111, 228, 0.1);
-  --code-bg: #f4f6f9;
+  --border: #d3dcdd;
+  --text: #10191d;
+  --muted: #4c5d64;
+  --accent: #0f766e;
+  --accent-ink: #ffffff;
+  --accent-soft: rgba(15, 118, 110, 0.08);
+  --write: #9a5b00;
+  --write-soft: rgba(154, 91, 0, 0.08);
+  --code-bg: #f3f6f6;
+  --code-text: #24323a;
+  --danger: #b42318;
+  --grid: rgba(16, 25, 29, 0.12);
   color-scheme: light;
 }
 
@@ -43,7 +65,7 @@ body {
   width: 38px;
   height: 38px;
   border: 1px solid var(--border);
-  border-radius: 999px;
+  border-radius: 2px;
   background: var(--surface);
   color: var(--muted);
   font-size: 16px;
@@ -69,8 +91,8 @@ body {
 body {
   background: var(--bg);
   color: var(--text);
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial,
-    sans-serif;
+  font-family: var(--sans);
+  font-weight: 300;
   -webkit-font-smoothing: antialiased;
   line-height: 1.6;
 }
@@ -85,7 +107,30 @@ a:hover {
 
 code,
 pre {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-family: var(--code);
+  font-variant-ligatures: contextual;
+}
+strong,
+b {
+  font-weight: 500;
+}
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.skip {
+  position: absolute;
+  left: 12px;
+  top: -48px;
+  z-index: 10;
+  padding: 8px 12px;
+  background: var(--accent);
+  color: var(--accent-ink);
+  font: 500 0.85rem var(--code);
+}
+.skip:focus {
+  top: 12px;
+  text-decoration: none;
 }
 
 .wrap {
@@ -96,20 +141,74 @@ pre {
 
 .pill {
   display: inline-block;
-  font-size: 0.75rem;
-  font-weight: 600;
+  font: 400 0.78rem var(--code);
   color: var(--accent);
-  background: var(--accent-soft);
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  padding: 4px 12px;
   letter-spacing: 0.02em;
 }
+.pill::before {
+  content: "$ ";
+  color: var(--muted);
+}
 
+h1,
+h2,
+h3 {
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
 h1 {
-  font-size: 2.4rem;
-  letter-spacing: -0.02em;
-  margin: 16px 0 10px;
+  font-size: clamp(3.4rem, 10vw, 6rem);
+  margin: 18px 0 14px;
+}
+h2 {
+  font-size: 1.5rem;
+  margin: 0 0 14px;
+}
+
+/* The masthead sits on a floor-plan dot grid; the rest of the page stays quiet. */
+.masthead {
+  position: relative;
+  padding: 8px 0 32px;
+  margin-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+.masthead::before {
+  content: "";
+  position: absolute;
+  inset: -64px -24px 0;
+  z-index: -1;
+  background-image: radial-gradient(var(--grid) 1px, transparent 1.5px);
+  background-size: 18px 18px;
+  mask-image: linear-gradient(to bottom, black 40%, transparent);
+  pointer-events: none;
+}
+.endpoint {
+  font: 400 0.95rem var(--code);
+  color: var(--muted);
+}
+.endpoint b {
+  color: var(--accent);
+  font-weight: 500;
+}
+
+/* Method badges: reads in the brand teal, writes in amber. */
+.method {
+  display: inline-block;
+  min-width: 4.4em;
+  padding: 1px 6px;
+  font: 500 0.74rem var(--code);
+  text-align: center;
+  border: 1px solid currentColor;
+  border-radius: 2px;
+}
+.method--read {
+  color: var(--accent);
+  background: var(--accent-soft);
+}
+.method--write {
+  color: var(--write);
+  background: var(--write-soft);
 }
 
 .lede {
@@ -124,15 +223,43 @@ h1 {
   border-radius: var(--radius);
   padding: 18px 20px;
 }
+.card strong {
+  font-weight: 800;
+  font-size: 1.05rem;
+  letter-spacing: -0.01em;
+}
 
+/* Console block with a line-number gutter (counters, so the text stays copyable). */
 pre.block {
   background: var(--code-bg);
   border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
   border-radius: var(--radius);
-  padding: 16px;
+  padding: 14px 16px 14px 0;
   overflow-x: auto;
   font-size: 0.86rem;
-  color: #cbd5e1;
+  line-height: 1.7;
+  color: var(--code-text);
+  counter-reset: line;
+}
+pre.block .ln {
+  display: block;
+  padding-left: 3.2em;
+  position: relative;
+}
+pre.block .ln::before {
+  counter-increment: line;
+  content: counter(line);
+  position: absolute;
+  left: 0;
+  width: 2.2em;
+  text-align: right;
+  color: var(--muted);
+  opacity: 0.6;
+  user-select: none;
+}
+pre.block .c {
+  color: var(--muted);
 }
 
 .grid {
@@ -162,8 +289,9 @@ button {
   padding: 10px 12px;
   background: var(--code-bg);
   border: 1px solid var(--border);
-  border-radius: 8px;
+  border-radius: 2px;
   color: var(--text);
+  font-family: var(--code);
 }
 .input:focus {
   outline: none;
@@ -172,12 +300,15 @@ button {
 
 .btn {
   padding: 10px 16px;
-  border-radius: 8px;
+  border-radius: 2px;
   border: 1px solid var(--accent);
   background: var(--accent);
-  color: #06101f;
-  font-weight: 600;
+  color: var(--accent-ink);
+  font-weight: 500;
   cursor: pointer;
+}
+.btn:hover {
+  text-decoration: none;
 }
 .btn:hover {
   filter: brightness(1.06);
@@ -201,7 +332,9 @@ td {
 }
 th {
   color: var(--muted);
-  font-weight: 600;
+  font: 500 0.74rem var(--code);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
 }
 
 /* Wide content (tables) scrolls inside its own container instead of pushing the
@@ -209,14 +342,14 @@ th {
 .tag {
   display: inline-block;
   padding: 2px 9px;
-  border-radius: 999px;
-  font-size: 0.78rem;
+  border-radius: 2px;
+  font: 400 0.76rem var(--code);
   background: var(--surface);
   border: 1px solid var(--border);
   color: var(--muted);
 }
 .tag--ok {
-  color: #2e9e6b;
+  color: #1d7a50;
   border-color: rgba(46, 158, 107, 0.4);
   background: rgba(46, 158, 107, 0.12);
 }
@@ -235,10 +368,24 @@ th {
   .wrap {
     padding: 40px 18px 64px;
   }
+  /* Bleed only to the gutter, or the dot grid causes a sideways scroll. */
+  .masthead::before {
+    inset: -40px -18px 0;
+  }
   h1 {
     font-size: 1.9rem;
   }
   .lede {
     font-size: 1rem;
   }
+}
+
+.error {
+  color: var(--danger);
+  margin: 0;
+}
+.btn.danger {
+  background: transparent;
+  color: var(--danger);
+  border-color: var(--danger);
 }
