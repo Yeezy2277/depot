@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { Icon } from "./Icon";
 
 /** Toggles `data-theme` on <html> and persists the choice. Paired with the
  *  no-flash script in layout.tsx so the initial theme is applied before paint. */
@@ -28,7 +29,7 @@ export function ThemeToggle() {
       aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} theme`}
       title="Toggle theme"
     >
-      {theme === "dark" ? "☀" : "☾"}
+      <Icon name={theme === "dark" ? "sun" : "moon"} />
     </button>
   );
 }

@@ -7,7 +7,7 @@
 (Contentful). Depot is the other side of that line: the server that stores content, guards
 it, and delivers it — auth, a Postgres content model, and a token-secured delivery API.
 
-> **Live:** <https://depot.vitaliipopov.dev> · **Portfolio:** <https://vitaliipopov.dev>
+> **Live:** <https://depot.vitaliipopov.dev>, **Portfolio:** <https://vitaliipopov.dev>
 
 No frontend framework doing a bit of backend on the side — this is a real API with sessions,
 hashed credentials, API tokens, validation, rate limiting and ownership checks, backed by a
@@ -55,11 +55,11 @@ Every mutation is scoped to the authenticated owner; the delivery API only ever 
 | `POST` | `/api/auth/login` | — | Start a session |
 | `POST` | `/api/auth/logout` | session | End the session |
 | `GET` | `/api/auth/me` | session | Current user |
-| `GET`·`POST` | `/api/collections` | session | List / create content types |
-| `GET`·`PATCH`·`DELETE` | `/api/collections/:slug` | session | Read / edit / delete a content type |
-| `GET`·`POST` | `/api/collections/:slug/items` | session | List / create entries |
-| `GET`·`PATCH`·`DELETE` | `/api/items/:id` | session | Read / edit / publish / delete an entry |
-| `GET`·`POST` | `/api/tokens` | session | List / issue delivery tokens |
+| `GET`, `POST` | `/api/collections` | session | List / create content types |
+| `GET`, `PATCH`, `DELETE` | `/api/collections/:slug` | session | Read / edit / delete a content type |
+| `GET`, `POST` | `/api/collections/:slug/items` | session | List / create entries |
+| `GET`, `PATCH`, `DELETE` | `/api/items/:id` | session | Read / edit / publish / delete an entry |
+| `GET`, `POST` | `/api/tokens` | session | List / issue delivery tokens |
 | `GET` | `/api/v1/:collection` | token | **Delivery:** published items (`?limit&offset`) |
 | `GET` | `/api/v1/:collection/:slug` | token | **Delivery:** a single published item |
 

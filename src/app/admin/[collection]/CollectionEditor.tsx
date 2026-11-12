@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { fmtDate } from "@/lib/format";
+import { Icon } from "@/components/Icon";
 
 type Item = {
   id: string;
@@ -114,7 +115,7 @@ export function CollectionEditor({
       <div className="row" style={{ justifyContent: "space-between" }}>
         <div>
           <Link className="muted" href="/admin">
-            ← Collections
+            <Icon name="arrowLeft" size={13} /> Collections
           </Link>
           <h1 style={{ fontSize: "1.8rem", margin: "8px 0 0" }}>{collection.name}</h1>
           <p className="muted" style={{ margin: 0 }}>

@@ -6,7 +6,7 @@ export default function Home() {
     <main className="wrap" id="main">
       <header className="masthead">
       <div className="topbar">
-        <span className="pill">backend · api · postgres</span>
+        <span className="pill">backend / api / postgres</span>
         <ThemeToggle />
       </div>
       <h1>Depot</h1>
@@ -16,7 +16,7 @@ export default function Home() {
       <p className="lede">
         A headless content API — the <strong>backend half of a CMS</strong>. Email/password
         auth with signed-cookie sessions, hashed API tokens for delivery, a Postgres content
-        model (collections → items with a publish lifecycle), and a token-secured read API.
+        model (collections of items with a publish lifecycle), and a token-secured read API.
         Built with Next.js route handlers, Drizzle ORM and Neon Postgres.
       </p>
 
