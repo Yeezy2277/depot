@@ -111,7 +111,7 @@ const CURL = [
   "curl https://depot.vitaliipopov.dev/api/v1/articles \\",
   '  -H "Authorization: Bearer depot_your_token_here"',
   "",
-  '# → { "data": [ { "slug": "hello-world", "data": { … }, "publishedAt": "…" } ] }',
+  '# Response: { "data": [ { "slug": "hello-world", "data": { … }, "publishedAt": "…" } ] }',
 ];
 
 const ENDPOINTS = [

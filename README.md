@@ -68,7 +68,7 @@ Every mutation is scoped to the authenticated owner; the delivery API only ever 
 ```bash
 curl https://depot.vitaliipopov.dev/api/v1/articles \
   -H "Authorization: Bearer depot_your_token_here"
-# → { "data": [ { "slug": "hello-world", "data": { … }, "publishedAt": "…" } ] }
+# Response: { "data": [ { "slug": "hello-world", "data": { … }, "publishedAt": "…" } ] }
 ```
 
 Every response uses one envelope: `{ data }` on success, `{ error: { message, code, details? } }`
