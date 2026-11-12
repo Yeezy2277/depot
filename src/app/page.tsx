@@ -6,7 +6,7 @@ export default function Home() {
     <main className="wrap" id="main">
       <header className="masthead">
       <div className="topbar">
-        <span className="pill">backend · api · postgres</span>
+        <span className="pill">backend / api / postgres</span>
         <ThemeToggle />
       </div>
       <h1>Depot</h1>
