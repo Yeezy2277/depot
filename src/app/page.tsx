@@ -14,7 +14,7 @@ export default function Home() {
         <b>GET</b> /api/v1/<b>:collection</b>/:slug
       </p>
       <p className="lede">
-        A headless content API — the <strong>backend half of a CMS</strong>. Email/password
+        A headless content API: the <strong>backend half of a CMS</strong>. Email/password
         auth with signed-cookie sessions, hashed API tokens for delivery, a Postgres content
         model (collections of items with a publish lifecycle), and a token-secured read API.
         Built with Next.js route handlers, Drizzle ORM and Neon Postgres.
@@ -47,7 +47,7 @@ export default function Home() {
             <strong>Typed data layer</strong>
             <p className="muted" style={{ margin: "6px 0 0" }}>
               Drizzle schema with relations, unique indexes, migrations and a JSONB
-              content column. Neon HTTP driver — serverless-safe.
+              content column. The Neon HTTP driver is safe in serverless functions.
             </p>
           </div>
           <div className="card">
@@ -63,7 +63,7 @@ export default function Home() {
       <section style={{ marginTop: 40 }}>
         <h2>Delivery API</h2>
         <p className="muted">
-          Read published content with a bearer token — CORS-open, so any frontend can consume it:
+          Read published content with a bearer token. CORS is open, so any frontend can call it:
         </p>
         <pre className="block" tabIndex={0} role="region" aria-label="Example request; scrolls sideways">
           {CURL.map((line, i) => (
@@ -111,7 +111,7 @@ const CURL = [
   "curl https://depot.vitaliipopov.dev/api/v1/articles \\",
   '  -H "Authorization: Bearer depot_your_token_here"',
   "",
-  '# → { "data": [ { "slug": "hello-world", "data": { … }, "publishedAt": "…" } ] }',
+  '# Response: { "data": [ { "slug": "hello-world", "data": { … }, "publishedAt": "…" } ] }',
 ];
 
 const ENDPOINTS = [
