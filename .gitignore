@@ -22,5 +22,3 @@ npm-debug.log*
 .vercel
 *.tsbuildinfo
 
-# claude local dev config
-.claude/
